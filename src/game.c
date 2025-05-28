@@ -1,20 +1,8 @@
 /*
- * Main file
+ * File that handle all the computing
  */
 
 #include "gol.h"
-
-static void display_map(char **map)
-{
-    for (int i = 0; map[i] != NULL; i++) {
-        for (int j = 0; map[i][j] != '\0'; j++) {
-            if (map[i][j] == TO_DIE) map[i][j] = DEAD;
-            if (map[i][j] == TO_LIVE) map[i][j] = LIVE;
-        }
-        mvprintw(i, 0, map[i]);
-    }
-    refresh();
-}
 
 static void process_changes(char **map, int i, int j)
 {
@@ -34,25 +22,34 @@ static void process_changes(char **map, int i, int j)
     if (nb_neigh == 3) map[i][j] = TO_LIVE;
 }
 
-int game_of_life(int ac, char *argv[])
+static void handle_user_input(int input)
 {
-    char **map = parse_arg(ac, argv);
+    switch (input) {
+    case ' ':
+        break;
+    }
+}
 
-    if (map == NULL) return -1;
+int game_of_life(win_t *manager, char **map)
+{
+    clock_t d_time = 1000000;
+    clock_t time = clock();
+    int input;
 
     // Game loop
     while (true) {
-        display_map(map);
-        for (int i = 0; map[i] != NULL; i++) {
-            for (int j = 0; map[i][j] != '\0'; j++)
-                process_changes(map, i, j);
+        input = getch();
+        if (input == 'q')
+            break;
+        handle_user_input(input);
+        display_map(manager, map);
+        if (clock() - time > d_time) {
+            for (int i = 0; map[i] != NULL; i++) {
+                for (int j = 0; map[i][j] != '\0'; j++)
+                    process_changes(map, i, j);
+            }
+            time = clock();
         }
-        sleep(2);
     }
-
-    // Free map
-    for (int i = 0; map[i] != NULL; i++)
-        free(map[i]);
-    free(map);
     return 0;
 }

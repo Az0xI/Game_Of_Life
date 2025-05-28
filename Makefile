@@ -5,7 +5,9 @@
 SRC	=	src/main.c	\
 		src/help.c	\
 		src/game.c	\
-		src/parsing.c
+		src/parsing.c	\
+		src/visuals.c	\
+		src/free.c
 OBJ	=	$(SRC:.c=.o)
 CFLAGS	=	-Wall -g
 CPPFLAGS	=	-I./include/

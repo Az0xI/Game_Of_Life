@@ -1,4 +1,4 @@
-##### Project still in progress
+# Project still in progress
 
 ### Game Of Life
 
